@@ -26,5 +26,9 @@ function app(){
 
 }
 
+function createTask(name, description, checklist, notes){
+     
+}
+
 
 app();
