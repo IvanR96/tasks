@@ -10,9 +10,16 @@ class Todo{
     }
 }
 
-function createTodo(title, description, checklist, notes){
-    return new Todo(title, description, checklist, notes);
+function createTodo() {
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const checklist = document.getElementById('checklist').value.split(',').map(item => item.trim());
+    const notes = document.getElementById('notes').value;
+
+    const todo = new Todo(title, description, checklist, notes);
+    addTodoToHTML(todo);
 }
+
 
 function addTodoToHTML(todo) {
     const todoList = document.getElementById('todoContainer');
@@ -34,6 +41,27 @@ function createChecklistHTML(checklist) {
     return checklist.map(item => `<input type="checkbox">${item}`).join('<br>');
 }
 
+function createForm(){
+    const form = document.createElement('form');
+    form.id = 'todoForm';
+
+    form.innerHTML = `<label for="title">Title:</label>
+    <input type="text" id="title" required><br>
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" required><br>
+
+    <label for="checklist">Checklist (comma-separated):</label>
+    <input type="text" id="checklist"><br>
+
+    <label for="notes">Notes:</label>
+    <textarea id="notes"></textarea><br>
+
+    <button type="button" onclick="createTodo()">Add Todo</button>`;
+
+
+}
+
 function app(){
 
     const header = document.createElement('div');
@@ -49,12 +77,21 @@ function app(){
     appContainter.appendChild(header);
 
     // create project div
+
+    //create form here
     
     // todo container div
     const todoContainer = document.createElement('div');
     todoContainer.id = 'todoContainer';
 
+    const create = createForm();
+
+    todoContainer.append(create);
+
+    
+
     appContainter.appendChild(todoContainer);
+
 
     const myTodo = createTodo(
         'Learn JavaScript',
@@ -64,6 +101,8 @@ function app(){
     );
 
     addTodoToHTML(myTodo);
+
+    
 
 
 
