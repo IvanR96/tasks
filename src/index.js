@@ -44,6 +44,18 @@ function createChecklistHTML(checklist) {
 
 
 function app(){
+    const myTodo = createTodo(
+        'Learn JavaScript',
+        'Finish the tutorial on classes',
+        ['Read documentation', 'Practice coding'],
+        'Take notes on key concepts'
+    );
+
+    const todo = document.getElementById('todo');
+
+
+
+    todo.appendChild(createTodo(myTodo));
 
 
     
