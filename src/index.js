@@ -1,4 +1,5 @@
 import _, { forEach } from 'lodash';
+import './style.css';
 
 class Todo{
     constructor(title, description, checklist = [], notes = ''){
@@ -41,26 +42,6 @@ function createChecklistHTML(checklist) {
     return checklist.map(item => `<input type="checkbox">${item}`).join('<br>');
 }
 
-function createForm(){
-    const form = document.createElement('form');
-    form.id = 'todoForm';
-
-    form.innerHTML = `<label for="title">Title:</label>
-    <input type="text" id="title" required><br>
-
-    <label for="description">Description:</label>
-    <input type="text" id="description" required><br>
-
-    <label for="checklist">Checklist (comma-separated):</label>
-    <input type="text" id="checklist"><br>
-
-    <label for="notes">Notes:</label>
-    <textarea id="notes"></textarea><br>
-
-    <button type="button" onclick="createTodo()">Add Todo</button>`;
-
-
-}
 
 function app(){
 
