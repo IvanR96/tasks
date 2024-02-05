@@ -64,43 +64,6 @@ function createForm(){
 
 function app(){
 
-    const header = document.createElement('div');
-
-    const title = document. createElement('h1');
-    title.textContent = "Todo List";
-
-    header.appendChild(title);
-
-
-    const appContainter = document.getElementById('app');
-
-    appContainter.appendChild(header);
-
-    // create project div
-
-    //create form here
-    
-    // todo container div
-    const todoContainer = document.createElement('div');
-    todoContainer.id = 'todoContainer';
-
-    const create = createForm();
-
-    todoContainer.append(create);
-
-    
-
-    appContainter.appendChild(todoContainer);
-
-
-    const myTodo = createTodo(
-        'Learn JavaScript',
-        'Finish the tutorial on classes',
-        ['Read documentation', 'Practice coding'],
-        'Take notes on key concepts'
-    );
-
-    addTodoToHTML(myTodo);
 
     
 
