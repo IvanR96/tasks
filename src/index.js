@@ -36,10 +36,12 @@ function addTodoToHTML(todo) {
     listItem.id = 'list';
 
     // Create and set content for the list item
-    listItem.innerHTML = `<strong>${todo.title}</strong><br>
+    listItem.innerHTML = `<div>
+                          <strong>${todo.title}</strong><br>
                           <em>- ${todo.description}</em><br>
                           ${createChecklistHTML(todo.checklist)}<br>
-                          Notes: ${todo.notes}`;
+                          Notes: ${todo.notes}
+                          </div>`;
 
     // Append the list item to the todoList
     todoList.appendChild(listItem);
@@ -49,23 +51,22 @@ function createChecklistHTML(checklist) {
     return checklist.map(item => `<input type="checkbox">${item}`).join('<br>');
 }
 
+function createHeader(){
+    const header = document.getElementById('header');
+
+    const title = document.createElement('h1');
+    title.textContent = 'Project Organizer';
+
+    header.appendChild(title);
+}
+
 
 function app(){
-    const myTodo = createTodo(
-        'Learn JavaScript',
-        'Finish the tutorial on classes',
-        ['Read documentation', 'Practice coding'],
-        'Take notes on key concepts'
-    );
 
-    const todo = document.getElementById('todo');
-
-
-
-    todo.appendChild(createTodo(myTodo));
-
+    const proj = document.getElementById('todoContainer');
 
     
+    createHeader();
 
 
 
