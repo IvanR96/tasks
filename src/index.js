@@ -5,20 +5,23 @@ const button = document.querySelector('button');
 
 button.addEventListener("click", function() {
     const title = document.getElementById('title').value;
+    const date = document.getElementById('dueDateInput').value;
     const description = document.getElementById('description').value;
     const checklist = document.getElementById('checklist').value.split(',').map(item => item.trim());
     const notes = document.getElementById('notes').value;
 
-    const todo = new Todo(title, description, checklist, notes);
+    const todo = new Todo(title, date,  description, checklist, notes);
     addTodoToHTML(todo);
     
 });
 
 
 
+
 class Todo{
-    constructor(title, description, checklist = [], notes = ''){
+    constructor(title, date , description, checklist = [], notes = ''){
         this.title = title;
+        this.date = date;
         this.description = description;
         this.checklist = checklist;
         this.notes = notes;
@@ -38,6 +41,7 @@ function addTodoToHTML(todo) {
     // Create and set content for the list item
     listItem.innerHTML = `<div>
                           <strong>${todo.title}</strong><br>
+                          Due date: ${todo.date}<br>
                           <em>- ${todo.description}</em><br>
                           ${createChecklistHTML(todo.checklist)}<br>
                           Notes: ${todo.notes}
@@ -60,6 +64,26 @@ function createHeader(){
     header.appendChild(title);
 }
 
+let projects = []; // Array to store projects
+
+function createProject(title) {
+  const project = {
+    title: title
+  };
+  projects.push(project); // Add project to the array
+  return project; // Return the created project
+}
+
+function removeProject(title) {
+  const index = projects.findIndex(project => project.title === title);
+  if (index !== -1) {
+    projects.splice(index, 1); // Remove project from the array
+    console.log(`Project "${title}" removed.`);
+  } else {
+    console.log(`Project "${title}" not found.`);
+  }
+}
+
 
 function app(){
 
@@ -67,6 +91,8 @@ function app(){
 
     
     createHeader();
+
+    addTodoToHTML(todo);
 
 
 
