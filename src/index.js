@@ -1,6 +1,21 @@
 import _, { forEach } from 'lodash';
 import './style.css';
 
+const button = document.querySelector('button');
+
+button.addEventListener("click", function() {
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const checklist = document.getElementById('checklist').value.split(',').map(item => item.trim());
+    const notes = document.getElementById('notes').value;
+
+    const todo = new Todo(title, description, checklist, notes);
+    addTodoToHTML(todo);
+    
+});
+
+
+
 class Todo{
     constructor(title, description, checklist = [], notes = ''){
         this.title = title;
@@ -11,15 +26,6 @@ class Todo{
     }
 }
 
-function createTodo() {
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('description').value;
-    const checklist = document.getElementById('checklist').value.split(',').map(item => item.trim());
-    const notes = document.getElementById('notes').value;
-
-    const todo = new Todo(title, description, checklist, notes);
-    addTodoToHTML(todo);
-}
 
 
 function addTodoToHTML(todo) {
@@ -27,6 +33,7 @@ function addTodoToHTML(todo) {
 
     // Create list item element
     const listItem = document.createElement('li');
+    listItem.id = 'list';
 
     // Create and set content for the list item
     listItem.innerHTML = `<strong>${todo.title}</strong><br>
