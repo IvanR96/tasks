@@ -2,7 +2,7 @@
   grid-template: 200px 300px 1fr/ 200px 300px 1fr;
   display: grid;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   grid-auto-flow: column dense;
 
 }
@@ -12,7 +12,7 @@ body{
 }
 
 h1{
-  text-align: center;
+  padding-left: 35px;
   font-size: 2.4rem;
 }
 
