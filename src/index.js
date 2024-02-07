@@ -1,104 +1,62 @@
-import _, { forEach } from 'lodash';
+import _ from 'lodash';
 import './style.css';
 
-const button = document.querySelector('button');
-
-button.addEventListener("click", function() {
-    const title = document.getElementById('title').value;
-    const date = document.getElementById('dueDateInput').value;
-    const description = document.getElementById('description').value;
-    const checklist = document.getElementById('checklist').value.split(',').map(item => item.trim());
-    const notes = document.getElementById('notes').value;
-
-    const todo = new Todo(title, date,  description, checklist, notes);
-    addTodoToHTML(todo);
-    
-});
-
-
-
+const todo = [];
+const projects = []
 
 class Todo{
-    constructor(title, date , description, checklist = [], notes = ''){
+    constructor(title, dueDate, checkList = [], priority){
         this.title = title;
-        this.date = date;
-        this.description = description;
-        this.checklist = checklist;
-        this.notes = notes;
-        this.completed = false;
+        this.dueDate = dueDate;
+        this.checkList = checkList;
+        this.priority = priority;
     }
+
 }
 
-
-
-function addTodoToHTML(todo) {
-    const todoList = document.getElementById('todoContainer');
-
-    // Create list item element
-    const listItem = document.createElement('li');
-    listItem.id = 'list';
-
-    // Create and set content for the list item
-    listItem.innerHTML = `<div>
-                          <strong>${todo.title}</strong><br>
-                          Due date: ${todo.date}<br>
-                          <em>- ${todo.description}</em><br>
-                          ${createChecklistHTML(todo.checklist)}<br>
-                          Notes: ${todo.notes}
-                          </div>`;
-
-    // Append the list item to the todoList
-    todoList.appendChild(listItem);
-}
-
-function createChecklistHTML(checklist) {
-    return checklist.map(item => `<input type="checkbox">${item}`).join('<br>');
+class Project{
+    constructor(name){
+        this.name = name;
+    }
 }
 
 function createHeader(){
     const header = document.getElementById('header');
 
     const title = document.createElement('h1');
-    title.textContent = 'Project Organizer';
+    title.textContent = 'Todo Organizer';
 
     header.appendChild(title);
 }
 
-let projects = []; // Array to store projects
 
-function createProject(title) {
-  const project = {
-    title: title
-  };
-  projects.push(project); // Add project to the array
-  return project; // Return the created project
-}
+function createProject(){
+    const projectName = document.getElementById('newProjectName').value;
 
-function removeProject(title) {
-  const index = projects.findIndex(project => project.title === title);
-  if (index !== -1) {
-    projects.splice(index, 1); // Remove project from the array
-    console.log(`Project "${title}" removed.`);
-  } else {
-    console.log(`Project "${title}" not found.`);
-  }
-}
+    const project = new Project(projectName);
 
+    projects.push(project);
 
-function app(){
+    document.getElementById('newProjectName').value = '';
 
-    const proj = document.getElementById('todoContainer');
+    const addProject = document.getElementById('projectContainer');
+
+    const projectDiv = document.createElement('div');
+    projectDiv.id = 'projectDiv';
+
+    projectDiv.textContent = project.name;
+
+    addProject.appendChild(projectDiv);
 
     
-    createHeader();
 
-    addTodoToHTML(todo);
-
+    //console.log("Project added to library: ", project);
 
 
 }
 
 
 
+createHeader();
 
-app();
+document.getElementById('addProjectButton').addEventListener('click', createProject);
