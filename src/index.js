@@ -1,62 +1,119 @@
 import _ from 'lodash';
 import './style.css';
 
-const todo = [];
-const projects = []
+const taskForm = document.getElementById("task-form");
+const confirmCloseDialog = document.getElementById("confirm-close-dialog");
+const openTaskFormBtn = document.getElementById("open-task-form-btn");
+const closeTaskFormBtn = document.getElementById("close-task-form-btn");
+const addOrUpdateTaskBtn = document.getElementById("add-or-update-task-btn");
+const cancelBtn = document.getElementById("cancel-btn");
+const discardBtn = document.getElementById("discard-btn");
+const tasksContainer = document.getElementById("tasks-container");
+const titleInput = document.getElementById("title-input");
+const dateInput = document.getElementById("date-input");
+const descriptionInput = document.getElementById("description-input");
 
-class Todo{
-    constructor(title, dueDate, checkList = [], priority){
-        this.title = title;
-        this.dueDate = dueDate;
-        this.checkList = checkList;
-        this.priority = priority;
+const taskData = JSON.parse(localStorage.getItem('data')) || [];
+let currentTask = {};
+
+const addOrUpdateTask = () => {
+  addOrUpdateTaskBtn.innerText = "Add Task";
+  const dataArrIndex = taskData.findIndex((item) => item.id === currentTask.id);
+  const taskObj = {
+    id: `${titleInput.value.toLowerCase().split(" ").join("-")}-${Date.now()}`,
+    title: titleInput.value,
+    date: dateInput.value,
+    description: descriptionInput.value,
+  };
+
+  if (dataArrIndex === -1) {
+    taskData.unshift(taskObj);
+  } else {
+    taskData[dataArrIndex] = taskObj;
+  }
+
+  localStorage.setItem("data", JSON.stringify(taskData));
+  updateTaskContainer();
+  reset();
+};
+
+const updateTaskContainer = () => {
+  tasksContainer.innerHTML = "";
+
+  taskData.forEach(
+    ({ id, title, date, description }) => {
+        (tasksContainer.innerHTML += `
+        <div class="task" id="${id}">
+          <p><strong>Title:</strong> ${title}</p>
+          <p><strong>Date:</strong> ${date}</p>
+          <p><strong>Description:</strong> ${description}</p>
+          <button type="button" onclick="editTask(this)"class="btn edit-btn">Edit</button>
+          <button type="button" id="delete" onclick="deleteTask(this)" class="btn">Delete</button> 
+        </div>
+      `)
+    } 
+  );
+};
+
+const deleteTask = (buttonEl) => {
+  const dataArrIndex = taskData.findIndex(
+    (item) => item.id === buttonEl.parentElement.id
+  );
+
+  buttonEl.parentElement.remove();
+  taskData.splice(dataArrIndex, 1);
+  localStorage.setItem('data', JSON.stringify(taskData));
+
+  buttonEl.parentElement.remove();
+}
+
+document.addEventListener('click', (event) => {
+    if (event.target && event.target.id === 'delete') {
+      deleteTask(event.target);
     }
+  });
 
+const reset = () => {
+  titleInput.value = '';
+  dateInput.value = '';
+  descriptionInput.value = '';
+
+  taskForm.classList.toggle('hidden');
+  currentTask = {};
+  
 }
 
-class Project{
-    constructor(name){
-        this.name = name;
-    }
+if (taskData.length){
+  updateTaskContainer();
 }
 
-function createHeader(){
-    const header = document.getElementById('header');
+openTaskFormBtn.addEventListener("click", () =>
+  taskForm.classList.toggle("hidden")
+);
 
-    const title = document.createElement('h1');
-    title.textContent = 'Todo Organizer';
+closeTaskFormBtn.addEventListener("click", () => {
+  const formInputsContainValues = titleInput.value || dateInput.value || descriptionInput.value;
+  const formInputValuesUpdated = titleInput.value !== currentTask.title || dateInput.value !== currentTask.date || descriptionInput.value !== currentTask.description;
 
-    header.appendChild(title);
-}
+  if (formInputsContainValues && formInputValuesUpdated) {
+    confirmCloseDialog.showModal();
+  } else {
+    reset();
+  }
+});
 
+cancelBtn.addEventListener('click', () =>{
+  confirmCloseDialog.close();
 
-function createProject(){
-    const projectName = document.getElementById('newProjectName').value;
+});
 
-    const project = new Project(projectName);
+discardBtn.addEventListener("click", () => {
+  confirmCloseDialog.close();
+  reset()
+});
 
-    projects.push(project);
+taskForm.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    document.getElementById('newProjectName').value = '';
-
-    const addProject = document.getElementById('projectContainer');
-
-    const projectDiv = document.createElement('div');
-    projectDiv.id = 'projectDiv';
-
-    projectDiv.textContent = project.name;
-
-    addProject.appendChild(projectDiv);
-
-    
-
-    //console.log("Project added to library: ", project);
-
-
-}
-
-
-
-createHeader();
-
-document.getElementById('addProjectButton').addEventListener('click', createProject);
+  addOrUpdateTask();
+});
