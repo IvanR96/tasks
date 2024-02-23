@@ -2,7 +2,7 @@ import _ from 'lodash';
 import './style.css';
 
 
-// adding linter
+// adding linter linter noticed var error
 const taskForm = document.getElementById("task-form");
 const confirmCloseDialog = document.getElementById("confirm-close-dialog");
 const openTaskFormBtn = document.getElementById("open-task-form-btn");
